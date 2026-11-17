@@ -1,0 +1,71 @@
+"""Part 3: predict fuel use from mass and power. Linear regression vs mean baseline.
+Reads data/auto-mpg.data (UCI Auto MPG) and cleans/converts it the same way as Part 2.
+Run from the repo root:  python part3_model.py
+"""
+import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split, KFold
+
+# ---- load data ----
+cols = ["mpg", "cylinders", "displacement", "horsepower", "weight_lb",
+        "acceleration", "model_year", "origin", "name"]
+df = pd.read_csv("data/auto-mpg.data", sep=r"\s+", header=None, names=cols,
+                 na_values="?")
+df = df.dropna(subset=["mpg", "horsepower", "weight_lb"])  # drop rows with missing values
+df["l_per_100km"] = 235.2 / df["mpg"]          # US mpg -> L/100 km
+df["mass_kg"] = df["weight_lb"] * 0.45359237   # lb -> kg
+df["power"] = df["horsepower"] * 0.7457        # hp -> kW
+X = df[["mass_kg", "power"]].values   # inputs
+y = df["l_per_100km"].values          # what we predict
+
+
+def rmse(true, pred):
+    return np.sqrt(np.mean((true - pred) ** 2))
+
+
+def baseline_and_model_error(X_train, y_train, X_test, y_test):
+    """Fit on train, return (baseline RMSE, linear regression RMSE) on test."""
+    baseline_pred = y_train.mean()                    # baseline: always the training mean
+    model = LinearRegression().fit(X_train, y_train)  # linear regression
+    return rmse(y_test, baseline_pred), rmse(y_test, model.predict(X_test))
+
+
+# ---- 1. random 80/20 split ----
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=0)
+base, lin = baseline_and_model_error(X_tr, y_tr, X_te, y_te)
+print(f"Random split test RMSE:  baseline = {base:.3f}   linear regression = {lin:.3f}")
+
+# ---- 2. 5-fold cross-validation ----
+base_scores, lin_scores = [], []
+for train_idx, test_idx in KFold(n_splits=5, shuffle=True, random_state=0).split(X):
+    b, l = baseline_and_model_error(X[train_idx], y[train_idx], X[test_idx], y[test_idx])
+    base_scores.append(b)
+    lin_scores.append(l)
+print(f"5-fold CV RMSE:          baseline = {np.mean(base_scores):.3f} +/- {np.std(base_scores):.3f}"
+      f"   linear regression = {np.mean(lin_scores):.3f} +/- {np.std(lin_scores):.3f}")
+
+# ---- 3. fitted formula ----
+model = LinearRegression().fit(X, y)
+print(f"Formula: L/100km = {model.intercept_:.3f} + {model.coef_[0]:.5f}*mass_kg "
+      f"+ {model.coef_[1]:.5f}*power")
+
+# ---- 4. extrapolation: train on lightest 70%, test on heaviest 30% ----
+order = np.argsort(X[:, 0])           # sort cars by mass
+X, y = X[order], y[order]
+cut = int(0.7 * len(y))
+base, lin = baseline_and_model_error(X[:cut], y[:cut], X[cut:], y[cut:])
+print(f"Heaviest 30% test RMSE:  baseline = {base:.3f}   linear regression = {lin:.3f}")
+
+# ---- plot: heavy cars, true vs predicted ----
+heavy_model = LinearRegression().fit(X[:cut], y[:cut])
+os.makedirs("report", exist_ok=True)
+plt.scatter(X[cut:, 0], y[cut:], s=8, c="k", label="true")
+plt.scatter(X[cut:, 0], heavy_model.predict(X[cut:]), s=8, label="linear regression")
+plt.axhline(y[:cut].mean(), color="r", label="baseline (mean)")
+plt.xlabel("mass (kg)")
+plt.ylabel("L/100 km")
+plt.legend()
+plt.savefig("report/extrapolation.png", dpi=150)
