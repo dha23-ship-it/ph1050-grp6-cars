@@ -53,7 +53,7 @@ It is solved with forward Euler and classical RK4. The experiments are:
     pip install -r requirements.txt
     python part1.py          # prints results, saves plots to figures/
     pytest -q                # runs the tests
-# Part 2:Vehicle Weight vs. Fuel Consumption
+# Part 2: Vehicle Weight vs. Fuel Consumption
 
 **Dataset:** UCI Auto MPG
 
@@ -65,26 +65,27 @@ model.
 
 ## Method
 
--   Converted fuel economy: (F = 235.2/`\text{MPG}`{=tex}) (L/100 km).
--   Converted weight: (m =
-    `\text{weight(lb)}`{=tex}`\times0.453592`{=tex}) (kg).
+-   Converted fuel economy: `F = 235.2 / MPG` (L/100 km).
+-   Converted weight: `m = weight (lb) × 0.453592` (kg).
 -   Analysed 398 cars; no observations were dropped.
--   Fit a linear regression of fuel consumption against vehicle mass.
+-   Fitted a linear regression of fuel consumption against vehicle mass.
 
 ## Results
 
-\[ F(m)=-0.903+0.00899m \]
+**Fitted model:**
 
-  Measure                                  Result
-  ------------------------- ---------------------
-  Slope                       8.99 L/100 km/tonne
-  95% confidence interval          \[8.53, 9.46\]
-  (R\^2)                                    0.784
+`F(m) = -0.903 + 0.00899m`
+
+  Measure                                        Result
+  ------------------------- ---------------------------
+  Slope                             8.99 L/100 km/tonne
+  95% confidence interval     8.53--9.46 L/100 km/tonne
+  R²                                              0.784
 
 ## Physical comparison
 
-For rolling resistance, (F_r `\approx `{=tex}C\_{rr}mg). Using
-(C\_{rr}=0.010), the estimated theoretical slope is approximately **1.53
+Rolling resistance is approximated by `Fr ≈ Crr × m × g`. Using
+`Crr = 0.010`, the estimated theoretical slope is approximately **1.53
 L/100 km/tonne**.
 
 The empirical slope is approximately **5.9 times** this estimate.
@@ -101,13 +102,12 @@ real-world fuel use.
 ## Reproducibility
 
 Add the actual notebook/script name, programming language, libraries,
-versions and run command here. These implementation details were not
-available when this README was prepared.
+versions and run command here.
 
 ## Reference
 
--   UCI Machine Learning Repository --- Auto MPG dataset. Add the exact
-    dataset URL/citation used.
+-   UCI Machine Learning Repository—Auto MPG dataset.
+
 
 
 ## Part 3: Data-driven model
