@@ -50,6 +50,21 @@ It is solved with forward Euler and classical RK4. The experiments are:
 
 ## How to run
 
+## Part 3: Data-driven model
+
+Code: `part3_model.py`. Run with `python part3_model.py` from the repo root (reads `data/auto-mpg.data`).
+
+Model: linear regression predicting L/100 km from weight (kg) and engine power (kW). Baseline: the mean L/100 km of the training cars, predicted for every car. Error measure: RMSE. The experiments are:
+
+1. Random 80/20 train/test split (RMSE: baseline 3.975, linear regression 1.755).
+2. 5-fold cross-validation (RMSE: baseline 3.909 +/- 0.216, linear regression 1.689 +/- 0.045).
+3. Fitted formula on all cars: L/100 km = -0.455 + 0.00587 * mass_kg + 0.04839 * power_kW.
+4. Extrapolation test: train on the lightest 70% of cars, test on the heaviest 30% (RMSE: baseline 7.157, linear regression 2.037). The plot is in `report/extrapolation.png`.
+
+Conclusion: linear regression cuts the error by more than half against the mean baseline on random splits and by about 72% on the heaviest cars. Its error on heavy cars (2.04) is only slightly above the cross-validated error (1.69), so the weight trend extrapolates well. It still underpredicts some of the thirstiest cars, so mass and power do not capture everything.
+
+![Extrapolation test](report/extrapolation.png)
+
     pip install -r requirements.txt
     python part1.py          # prints results, saves plots to figures/
     pytest -q                # runs the tests
