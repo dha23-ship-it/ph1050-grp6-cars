@@ -53,9 +53,8 @@ It is solved with forward Euler and classical RK4. The experiments are:
     pip install -r requirements.txt
     python part1.py          # prints results, saves plots to figures/
     pytest -q                # runs the tests
-# Part 2 --- Vehicle Weight vs. Fuel Consumption
+# Part 2:Vehicle Weight vs. Fuel Consumption
 
-**Course:** PH1050 Computational Physics\
 **Dataset:** UCI Auto MPG
 
 ## Objective
