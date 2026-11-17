@@ -50,6 +50,11 @@ It is solved with forward Euler and classical RK4. The experiments are:
 
 ## How to run
 
+    pip install -r requirements.txt
+    python part1.py          # prints results, saves plots to figures/
+    pytest -q                # runs the tests
+    
+
 ## Part 3: Data-driven model
 
 Code: `part3_model.py`. Run with `python part3_model.py` from the repo root (reads `data/auto-mpg.data`).
@@ -65,6 +70,4 @@ Conclusion: linear regression cuts the error by more than half against the mean 
 
 ![Extrapolation test](report/extrapolation.png)
 
-    pip install -r requirements.txt
-    python part1.py          # prints results, saves plots to figures/
-    pytest -q                # runs the tests
+
