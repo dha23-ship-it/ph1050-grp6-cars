@@ -75,12 +75,11 @@ model.
 **Fitted model:**
 
 `F(m) = -0.903 + 0.00899m`
-
-  Measure                                        Result
-  ------------------------- ---------------------------
-  Slope                             8.99 L/100 km/tonne
-  95% confidence interval     8.53--9.46 L/100 km/tonne
-  R²                                              0.784
+| Measure | Result |
+|:--|--:|
+| Slope | 8.99 L/100 km/tonne |
+| 95% confidence interval | 8.53–9.46 L/100 km/tonne |
+| R-squared | 0.784 |
 
 ## Physical comparison
 
