@@ -100,8 +100,12 @@ real-world fuel use.
 
 ## Reproducibility
 
-Add the actual notebook/script name, programming language, libraries,
-versions and run command here.
+### Requirements
+- Python 3
+- NumPy
+- Pandas
+- Matplotlib
+- SciPy
 
 ## Reference
 
