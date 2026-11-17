@@ -68,6 +68,6 @@ Model: linear regression predicting L/100 km from weight (kg) and engine power (
 
 Conclusion: linear regression cuts the error by more than half against the mean baseline on random splits and by about 72% on the heaviest cars. Its error on heavy cars (2.04) is only slightly above the cross-validated error (1.69), so the weight trend extrapolates well. It still underpredicts some of the thirstiest cars, so mass and power do not capture everything.
 
-![Extrapolation test](report/extrapolation.png)
+![Extrapolation test](extrapolation.png)
 
 
